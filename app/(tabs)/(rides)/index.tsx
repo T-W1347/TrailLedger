@@ -1,4 +1,6 @@
+import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
+
 
 export default function Third() {
   return (
@@ -9,7 +11,8 @@ export default function Third() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Rides and trails</Text>
+      <Link href="/trails">Go to Trails</Link>
     </View>
   );
 }

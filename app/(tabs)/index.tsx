@@ -13,7 +13,24 @@ export default function Index() {
           </ImageBackground>
         </View>
         <ScrollView>
-        <Text>Edit app/index.tsx to edit this screen.</Text>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.welcomeText}>Hi, <Text style={{fontWeight: 'bold'}}>User</Text></Text>
+          </View>
+
+          <View style={styles.lineContainer}>
+            <View style={[styles.lineContainerBox, styles.twoBoxes]}>
+              <Text>Box 1</Text>
+            </View>
+            <View style={[styles.lineContainerBox, styles.twoBoxes]}>
+              <Text>Shows Connected Device if used?</Text>
+            </View>
+          </View>
+
+          <View style={styles.lineContainer}>
+            <View style={styles.lineContainerBox}>
+              <Text>Hello</Text>
+            </View>
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -23,7 +40,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
   },
   headerContainer: {
     width: '100%',
@@ -42,4 +58,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffffff',
   },
+   welcomeContainer: {
+    width: "100%",
+    justifyContent: 'center',
+    textAlign: 'left',
+    paddingVertical: 10,
+    backgroundColor: 'lightblue',
+  },
+  welcomeText: {
+    fontSize: 32,
+  },
+  lineContainer: {
+    width: "100%",
+    gap: 20,
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingHorizontal: 10,
+  },
+  lineContainerBox: {
+    borderWidth: 1,
+    borderRadius: 10,
+    flex: 1,    
+  },
+  twoBoxes: {
+    width: 150,
+    height: 150,
+  }
 });

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Second() {
+export default function Third() {
   return (
     <View
       style={{
@@ -9,7 +9,7 @@ export default function Second() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>This is user screen</Text>
     </View>
   );
 }
