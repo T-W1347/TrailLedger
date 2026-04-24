@@ -1,7 +1,16 @@
 import { Entypo, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+
 
 export default function TabLayout(){
+    const context = useContext(AuthContext);
+
+    if (!context?.loading && !context?.session) {
+        return <Redirect href="/(auth)/login" />;
+    }
+
     return(
         <Tabs>
             <Tabs.Screen
@@ -15,7 +24,7 @@ export default function TabLayout(){
                 }}
             />
             <Tabs.Screen
-                name="(rides)/index"
+                name="(rides)"
                 options={{
                     title: "Rides",
                     tabBarIcon: ({color, size}) => (
