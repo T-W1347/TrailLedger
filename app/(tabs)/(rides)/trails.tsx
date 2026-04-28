@@ -71,7 +71,6 @@ export default function Trails() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.cardHeader}>Trails</Text>
 
       {loading ? (
         <Text>Loading trails...</Text>
@@ -136,12 +135,6 @@ export default function Trails() {
             </View>
             <View style={styles.divider} />
 
-            <View style={styles.modalRow}>
-              <Text style={styles.modalLabel}>Added</Text>
-              <Text style={styles.modalValue}>
-                {selectedTrail ? formatDate(selectedTrail.created_at) : ""}
-              </Text>
-            </View>
 
             {/* Close Button */}
             <TouchableOpacity

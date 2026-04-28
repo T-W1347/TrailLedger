@@ -11,6 +11,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+     "**/*.native.tsx",
+    "**/*.web.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
 , "lib/supabase.ts"  ]

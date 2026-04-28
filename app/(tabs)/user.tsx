@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -26,9 +27,11 @@ export default function Profile() {
         setLoadingStats(false);
     };
 
-    useEffect(() => {
+    useFocusEffect(
+    useCallback(() => {
         if (session?.user) fetchStats();
-    }, [session]);
+    }, [session])
+);
 
     const totalMiles = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
     const totalRides = logs.length;

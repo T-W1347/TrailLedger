@@ -1,9 +1,10 @@
 import { supabase } from '@/lib/supabase';
-import { useContext, useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Alert, ImageBackground, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 
-const headerImage = require('../../assets/images/trailLedger-header-background.jpeg');
+const headerImage = require('../../assets/images/man_riding.jpg');
 
 
 export default function Index() {
@@ -34,8 +35,14 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (session?.user) fetchLogs
+    if (session?.user) fetchLogs();
   }, [session]);
+
+  useFocusEffect(
+  useCallback(() => {
+    fetchLogs();
+  }, [session])
+);
 
   const totalMiles = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
   const totalRides = logs.length;
@@ -117,8 +124,11 @@ export default function Index() {
 
         </View>
 
-        <TouchableOpacity style={styles.trackButton} onPress={() => setModalVisible(true)}>
-          <Text style={styles.trackButtonText}>+ Log a Ride</Text>
+        <TouchableOpacity
+          style={styles.trackButton}
+          onPress={() => router.push("/(rides)/tracker" as any)}
+        >
+          <Text style={styles.trackButtonText}>Start Ride</Text>
         </TouchableOpacity>
 
         <Text style={styles.sectionTitle}>Recent Rides</Text>
@@ -251,7 +261,7 @@ const styles = StyleSheet.create({
     padding: 14,
     alignItems: "center",
   },
-   statValue: {
+  statValue: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#fff",
@@ -291,7 +301,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e5e7eb",
   },
-   emptyText: {
+  emptyText: {
     fontSize: 16,
     color: "#374151",
     fontWeight: "600",

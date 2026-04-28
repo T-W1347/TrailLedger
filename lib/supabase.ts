@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
 
 const supabaseURL = process.env.EXPO_PUBLIC_DATABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_DATABASE_ANON_KEY;
@@ -8,13 +9,14 @@ if (!supabaseURL || !supabaseAnonKey) {
     throw new Error("Missing Supabase environment variables");
 }
 
-const isBrowser = typeof window !== "undefined";
+const isWeb = Platform.OS === "web";
 
 const memoryStorage: Record<string, string> = {};
 
 const ExpoStorage = {
     getItem: async (key: string) => {
-        if (isBrowser) {
+        if (isWeb) {
+            if (typeof window === "undefined") return null;  // ← guard
             return Promise.resolve(window.localStorage.getItem(key));
         }
         try {
@@ -25,19 +27,21 @@ const ExpoStorage = {
     },
 
     setItem: async (key: string, value: string) => {
-        if (isBrowser) {
+        if (isWeb) {
+            if (typeof window === "undefined") return;       // ← guard
             window.localStorage.setItem(key, value);
             return;
         }
-        try{
+        try {
             await AsyncStorage.setItem(key, value);
         } catch {
-            memoryStorage[key] = value
+            memoryStorage[key] = value;
         }
     },
 
-    removeItem: async(key: string) => {
-        if (isBrowser) {
+    removeItem: async (key: string) => {
+        if (isWeb) {
+            if (typeof window === "undefined") return;       // ← guard
             window.localStorage.removeItem(key);
             return;
         }
@@ -54,6 +58,6 @@ export const supabase = createClient(supabaseURL, supabaseAnonKey, {
         storage: ExpoStorage,
         autoRefreshToken: true,
         persistSession: true,
-        detectSessionInUrl: false,
+        detectSessionInUrl: isWeb,  // ← should be true on web for OAuth flows
     }
-})
+});

@@ -1,23 +1,19 @@
-import { Slot, useRouter, useSegments } from "expo-router";
+import { Slot, router } from "expo-router";
 import { useContext, useEffect } from "react";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
 
 function RootLayoutNav() {
-  const { session, loading } = useContext(AuthContext)!;
-  const segments = useSegments();
-  const router = useRouter();
+  const context = useContext(AuthContext);
 
   useEffect(() => {
-    if (loading) return;
-
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (!session && !inAuthGroup) {
-      router.replace("/(auth)/login");
-    } else if (session && inAuthGroup) {
-      router.replace("/(tabs)");
+    if (!context?.loading){
+      if (!context?.session) {
+        router.replace("/(auth)/login");
+      } else {
+        router.replace("/(tabs)");
+      }
     }
-  }, [session, loading]);
+  }, [context?.session, context?.loading]);
 
   return <Slot />;
 }

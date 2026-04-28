@@ -5,8 +5,8 @@ import { supabase } from '../../lib/supabase';
 
 
 export default function Register() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleRegister = async () => {
         const cleanEmail = email.trim();
@@ -27,50 +27,59 @@ export default function Register() {
         if (user) {
             const { error: profileError } = await supabase
                 .from("profiles")
-                .insert({ id: user.id });
-            
-            if (profileError) {
-                console.log("Profile creation error:", profileError);
-            }
+                .upsert({
+                    id: user.id, 
+                });
+
+        if (profileError) {
+            console.log("Profile creation error:", profileError);
         }
+    }
 
-        Alert.alert("Success", "Account created!");
-        router.push("/(auth)/login");
-    };
+    if (data.session) {
+        // User is already logged in → go straight to app
+        router.replace("/"); // or "/(tabs)"
+        return;
+    }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>Start tracking your rides</Text>
 
-            <TextInput
-                placeholder="Email"
-                placeholderTextColor="#999"
-                onChangeText={setEmail}
-                style={styles.input}
-                autoCapitalize="none"
-            />
+    Alert.alert("Success", "Account created!");
+    router.push("/(auth)/login");
+};
 
-            <TextInput
-                placeholder="Password"
-                placeholderTextColor="#999"
-                secureTextEntry
-                onChangeText={setPassword}
-                style={styles.input}
-            />
+return (
+    <View style={styles.container}>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>Start tracking your rides</Text>
 
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
+        <TextInput
+            placeholder="Email"
+            placeholderTextColor="#999"
+            onChangeText={setEmail}
+            style={styles.input}
+            autoCapitalize="none"
+        />
 
-            <Text style={styles.footerText}>
-                Already have an account?{" "}
-                <Text style={styles.link} onPress={() => router.push("/(auth)/login")}>
-                    Login
-                </Text>
+        <TextInput
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry
+            onChangeText={setPassword}
+            style={styles.input}
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.footerText}>
+            Already have an account?{" "}
+            <Text style={styles.link} onPress={() => router.push("/(auth)/login")}>
+                Login
             </Text>
-        </View>
-    )
+        </Text>
+    </View>
+)
 
 }
 
